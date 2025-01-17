@@ -14,13 +14,26 @@ List all dependencies and their version needed by the project as :
 
 * IDE used pycharm 2024.3 or later [download](https://www.jetbrains.com/pycharm/download/?section=windows)
 * Python 3.13 or later [official doc](https://www.python.org/downloads/)
+* Docker version 27.3.1 or later [official doc](https://www.docker.com/)
+* Pipenv version 3.7+ [official doc](https://pipenv.pypa.io/en/latest/index.html)
 * Git version 2.47.1 or later [official doc](https://git-scm.com/)
 
 ### Configuration
 
-Install requiremenets 
+Clone repository
 ````shell
-pip install -r requirements.txt
+git clone https://github.com/CPNV-ES-BI1-RIA2-ELT-EXTERNAL-SOURCE/EXTERNAL-SOURCE-LOAD-DATALAKE.git
+cd EXTERNAL-SOURCE-LOAD-DATALAKE
+````
+
+---
+
+## Development environment
+
+Install dependencies with pipenv
+````shell
+pip install pipenv
+pipenv install --dev
 ````
 
 Copy and modify the .env
@@ -28,17 +41,38 @@ Copy and modify the .env
 cp .env.example .env
 ````
 
----
-
-## Development environment
-
----
-### Start
-
+Start Docker 
 ````shell
-python main.py
+docker-compose up --build
 ````
 
+Start project 
+````shell
+docker-compose up
+````
+
+## Production environment
+
+Install dependencies with pipenv
+````shell
+pip install pipenv
+pipenv install 
+````
+
+Copy and modify the .env
+````shell
+cp .env.example .env
+````
+
+Start Docker 
+````shell
+docker-compose -f docker-compose.prod.yml up --build
+````
+
+Start project 
+````shell
+docker-compose up
+````
 
 ### Run test
 ````shell
@@ -53,7 +87,7 @@ pytest tests/aws/test_load.py
 ````shell
 ├───docs                  # Documentations (class, sequence diagram, ...)
 ├───tests                 # Tests 
-├───src
+├───app
 │   ├───cloud_services    # All cloud services (aws, gcp...)
 │   │   └───aws_service
 │   ├───exceptions        # All exceptions 
