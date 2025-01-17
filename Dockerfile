@@ -22,4 +22,4 @@ ARG SERVER_PORT
 EXPOSE ${SERVER_PORT}
 
 # Configuring behavior to suit the environment
-CMD ["sh", "-c", "if [ \"$ENVIRONMENT\" = 'production' ]; then uvicorn app:app --host 0.0.0.0 --port ${SERVER_PORT}; else uvicorn app:app --host 0.0.0.0 --port ${SERVER_PORT} --reload; fi"]
+CMD ["pipenv", "run", "uvicorn", "main:app", "--host", "$SERVER_HOST", "--port", "$SERVER_PORT"]
