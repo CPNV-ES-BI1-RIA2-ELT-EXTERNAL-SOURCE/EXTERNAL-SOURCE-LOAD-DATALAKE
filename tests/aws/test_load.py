@@ -2,16 +2,16 @@ import pytest
 from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 
-from src.Server import Server
-from src.cloud_services.aws_service import AwsService
-from src.cloud_services.gcp_service import GcpService
-from src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
+from app.Server import Server
+from app.cloud_services.aws_service import AwsService
+from app.cloud_services.gcp_service import GcpService
+from app.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 from unittest.mock import patch, MagicMock
 
 class TestLoad:
 
     @pytest.fixture
-    @patch("src.cloud_services.aws_service.boto3.client")
+    @patch("app.cloud_services.aws_service.boto3.client")
     def client_init(self, mock_storage):
         mock_s3_client = MagicMock()
         mock_storage.return_value = mock_s3_client
