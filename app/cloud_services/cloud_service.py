@@ -1,6 +1,6 @@
 from pydantic import json
 
-from src.objects.object import Object
+from app.objects.object import Object
 
 
 class CloudService:

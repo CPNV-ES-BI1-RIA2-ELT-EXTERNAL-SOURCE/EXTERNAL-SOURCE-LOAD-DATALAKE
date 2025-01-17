@@ -1,4 +1,4 @@
-from src.cloud_services.cloud_service import CloudService
+from app.cloud_services.cloud_service import CloudService
 from google.cloud import storage
 
 class GcpService(CloudService):

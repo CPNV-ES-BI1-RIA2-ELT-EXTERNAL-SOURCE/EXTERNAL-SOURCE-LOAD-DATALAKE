@@ -1,6 +1,6 @@
 import json
 
-from src.objects.object import Object
+from app.objects.object import Object
 
 class JsonObject(Object):
     def __init__(self, content : json):
