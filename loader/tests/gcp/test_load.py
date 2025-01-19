@@ -1,8 +1,8 @@
 import pytest
 
-from src.Server import Server
-from src.cloud_services.gcp_service import GcpService
-from src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
+from loader.src.Server import Server
+from loader.src.cloud_services.gcp_service import GcpService
+from loader.src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 from unittest.mock import patch, MagicMock
 
 

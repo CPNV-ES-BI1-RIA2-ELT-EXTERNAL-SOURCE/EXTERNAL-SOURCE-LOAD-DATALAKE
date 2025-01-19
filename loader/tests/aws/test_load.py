@@ -2,10 +2,9 @@ import pytest
 from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 
-from src.Server import Server
-from src.cloud_services.aws_service import AwsService
-from src.cloud_services.gcp_service import GcpService
-from src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
+from loader.src.Server import Server
+from loader.src.cloud_services.aws_service import AwsService
+from loader.src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 from unittest.mock import patch, MagicMock
 
 class TestLoad:

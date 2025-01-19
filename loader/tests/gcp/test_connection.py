@@ -1,9 +1,9 @@
 import pytest
 
-from src.Server import Server
-from src.cloud_services.gcp_service import GcpService
-from src.exceptions.authentication_failed_exception import AuthenticationFailedException
-from src.exceptions.destination_not_found_exception import DestinationNotFoundException
+from loader.src.Server import Server
+from loader.src.cloud_services.gcp_service import GcpService
+from loader.src.exceptions.authentication_failed_exception import AuthenticationFailedException
+from loader.src.exceptions.destination_not_found_exception import DestinationNotFoundException
 from unittest.mock import patch, MagicMock
 
 class TestConnection:

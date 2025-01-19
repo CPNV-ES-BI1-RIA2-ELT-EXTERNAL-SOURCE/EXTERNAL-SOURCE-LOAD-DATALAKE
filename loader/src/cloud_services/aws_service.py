@@ -1,11 +1,10 @@
 from botocore.exceptions import ClientError
 
-from src.cloud_services.cloud_service import CloudService
-from src.exceptions.authentication_failed_exception import AuthenticationFailedException
-from src.exceptions.destination_not_found_exception import DestinationNotFoundException
-from src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
+from loader.src.cloud_services.cloud_service import CloudService
+from loader.src.exceptions.authentication_failed_exception import AuthenticationFailedException
+from loader.src.exceptions.destination_not_found_exception import DestinationNotFoundException
+from loader.src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 
-from src.objects.object import Object
 import boto3
 
 

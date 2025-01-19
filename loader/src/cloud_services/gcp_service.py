@@ -1,5 +1,5 @@
-from src.cloud_services.cloud_service import CloudService
-from google.cloud import storage
+from loader.src.cloud_services.cloud_service import CloudService
+
 
 class GcpService(CloudService):
 

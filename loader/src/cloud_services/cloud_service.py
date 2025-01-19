@@ -1,8 +1,3 @@
-from pydantic import json
-
-from src.objects.object import Object
-
-
 class CloudService:
     def connect(self) -> None:
         pass

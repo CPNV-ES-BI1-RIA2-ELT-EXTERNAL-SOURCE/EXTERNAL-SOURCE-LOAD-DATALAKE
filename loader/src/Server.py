@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 
-from src.cloud_services.cloud_service import CloudService
-from src.objects.json_object import JsonObject
+from loader.src.cloud_services.cloud_service import CloudService
 
 
 class Server:
