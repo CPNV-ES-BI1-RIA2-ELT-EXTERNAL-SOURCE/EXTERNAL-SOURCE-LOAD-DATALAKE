@@ -25,7 +25,7 @@ class TestConnection:
             {"id": 2, "name": "Bob", "age": 30}
         ]
 
-        client = TestClient(server._app)
+        client = TestClient(server.app)
 
         # When / Then
         with pytest.raises(AuthenticationFailedException):
@@ -52,7 +52,7 @@ class TestConnection:
           "age": 25
         }
 
-        client = TestClient(server._app)
+        client = TestClient(server.app)
 
         # When / Then
         with pytest.raises(DestinationNotFoundException):

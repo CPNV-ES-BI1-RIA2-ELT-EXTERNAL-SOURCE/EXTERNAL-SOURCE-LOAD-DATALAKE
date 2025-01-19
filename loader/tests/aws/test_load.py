@@ -17,7 +17,7 @@ class TestLoad:
         mock_storage.return_value = mock_s3_client
         server = Server(AwsService("access_key", "your_secret_key", "bucket_name", "switzerland", "destination"))
         server.start()
-        client = TestClient(server._app)
+        client = TestClient(server.app)
 
         return client, mock_s3_client
 
