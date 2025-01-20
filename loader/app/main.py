@@ -1,7 +1,7 @@
 import os
 import uvicorn
-from src.Server import Server
-from src.cloud_services.aws_service import AwsService
+from app.Server import Server
+from app.cloud_services.aws_service import AwsService
 
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")

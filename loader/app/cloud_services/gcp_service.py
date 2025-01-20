@@ -1,4 +1,4 @@
-from loader.src.cloud_services.cloud_service import CloudService
+from loader.app.cloud_services.cloud_service import CloudService
 
 
 class GcpService(CloudService):

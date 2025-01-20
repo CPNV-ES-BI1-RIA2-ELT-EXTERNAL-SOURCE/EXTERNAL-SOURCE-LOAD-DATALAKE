@@ -1,14 +1,14 @@
 import pytest
 
-from loader.src.Server import Server
-from loader.src.cloud_services.gcp_service import GcpService
-from loader.src.exceptions.authentication_failed_exception import AuthenticationFailedException
-from loader.src.exceptions.destination_not_found_exception import DestinationNotFoundException
+from loader.app.Server import Server
+from loader.app.cloud_services.gcp_service import GcpService
+from loader.app.exceptions.authentication_failed_exception import AuthenticationFailedException
+from loader.app.exceptions.destination_not_found_exception import DestinationNotFoundException
 from unittest.mock import patch, MagicMock
 
 class TestConnection:
 
-    @patch("src.cloud_services.gcp_service.storage")
+    @patch("app.cloud_services.gcp_service.storage")
     def test_cannot_connect_to_datalake_authentication_failed(self, mock_storage):
         # Given
         server = Server("localhost", 8000)
@@ -26,7 +26,7 @@ class TestConnection:
         with pytest.raises(AuthenticationFailedException):
             server.load(json_file)
 
-    @patch("src.cloud_services.gcp_service.storage")
+    @patch("app.cloud_services.gcp_service.storage")
     def test_cannot_connect_to_datalake_not_found(self, mock_storage):
         # Given
         server = Server("localhost", 8000)

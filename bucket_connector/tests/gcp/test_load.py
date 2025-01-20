@@ -1,8 +1,8 @@
 import pytest
 
-from loader.src.Server import Server
-from loader.src.cloud_services.gcp_service import GcpService
-from loader.src.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
+from loader.app.Server import Server
+from loader.app.cloud_services.gcp_service import GcpService
+from loader.app.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 from unittest.mock import patch, MagicMock
 
 
@@ -19,7 +19,7 @@ class TestLoad:
 
         return server, json_file
 
-    @patch("src.cloud_services.gcp_service.storage")
+    @patch("app.cloud_services.gcp_service.storage")
     def test_load_json_success(self, mock_storage, setup_server_and_json_file):
         #Given
         server, json_file = setup_server_and_json_file
@@ -41,7 +41,7 @@ class TestLoad:
         mock_bucket.blob.assert_called_once_with(json_file)
         mock_blob.upload_from_filename.assert_called_once_with(json_file)
 
-    @patch("src.cloud_services.gcp_service.storage")
+    @patch("app.cloud_services.gcp_service.storage")
     def test_document_already_exists(self, mock_storage, setup_server_and_json_file):
         # Given
         server, json_file = setup_server_and_json_file

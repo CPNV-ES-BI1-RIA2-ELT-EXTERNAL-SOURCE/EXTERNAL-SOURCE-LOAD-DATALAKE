@@ -53,7 +53,7 @@ pytest tests/aws/test_load.py
 ````shell
 ├───docs                  # Documentations (class, sequence diagram, ...)
 ├───tests                 # Tests 
-├───src
+├───app
 │   ├───cloud_services    # All cloud services (aws, gcp...)
 │   │   └───aws_service
 │   ├───exceptions        # All exceptions 
