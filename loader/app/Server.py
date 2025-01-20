@@ -1,24 +1,11 @@
-from fastapi import FastAPI, Request
-
-from loader.app.cloud_services.cloud_service import CloudService
-
+from fastapi import FastAPI
+from app.routes import routes as router
 
 class Server:
-    app : FastAPI
-    _service : CloudService
+    app: FastAPI
 
-    def __init__(self, service : CloudService):
-        self._service = service
+    def __init__(self):
         self.app = FastAPI()
 
     def start(self):
-        self._service.connect()
-
-        @self.app.post("/load")
-        async def load_content(request: Request):
-            # TODO : implement multy types with object types
-            self._service.load(await request.json())
-
-
-    def stop(self):
-        self._service.disconnect()
+        self.app.include_router(router.router)

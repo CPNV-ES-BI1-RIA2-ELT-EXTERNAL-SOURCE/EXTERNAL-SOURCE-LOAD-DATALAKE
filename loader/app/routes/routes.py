@@ -3,34 +3,40 @@ from app.cloud_services.aws_service import AwsService
 from app.cloud_services.cloud_service import CloudService
 from app.services.environement_varriables import get_env_variables
 
+from loader.app.api_handler import APIHandler
+
+from loader.app.services.request import api_service
+
 router : APIRouter = APIRouter()
 _VERSION : str = "v1"
 
-@router.post("/" + _VERSION + "/object")
+@router.post("/" + _VERSION + "/raw-object")
 async def load_content(
     bucket_name: str = Form(...),
     bucket_destination: str = Form(...),
-    object: UploadFile = File(...)
+    object_url: str = Form(...)
 ):
-
     try:
-        variables = get_env_variables(variables=["AWS_ACCESS_KEY", "AWS_SECRET_KEY", "AWS_REGION"])
+        variables = get_env_variables(variables=["LOADER_API"])
+        params={
+            "url": object_url,
+        }
 
-        service = AwsService(
-            access_key=variables["AWS_ACCESS_KEY"],
-            secret_key=variables["AWS_SECRET_KEY"],
-            region=variables["AWS_REGION"],
-            bucket=bucket_name,
-            destination=bucket_destination
+        response = api_service(url=object_url, method="GET", params=params)
+
+        params = {
+            "object": response,
+            "bucket_name": bucket_name,
+            "bucket_destination": bucket_destination,
+        }
+
+        response = api_service(
+            url=variables["LOADER_API"],
+            method="POST",
+            params=params
         )
 
-        service.connect()
-
-        service.load(object=object)
-
-        # TODO : should response with the url of the object or an error.
-
-        return {}
+        return response
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur : {str(e)}")
