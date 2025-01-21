@@ -1,24 +1,20 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, Form
+from fastapi import APIRouter, HTTPException
+from app.schemas.requests.job_request import JobRequest
+from app.services.api_service import api_service
 from app.services.environement_varriables import get_env_variables
-from app.services.api_service import (api_service)
 
-router : APIRouter = APIRouter()
-_VERSION : str = "v1"
-_bucket_destination = "/"
+router = APIRouter()
 
-@router.post("/" + _VERSION + "/raw-object")
-async def load_content(
-    dataSource: str = Form(...),
-    dataDestination: str = Form(...)
-):
+@router.post('/{job_id}')
+def job(job_id: int, request: JobRequest):
     try:
         variables = get_env_variables(variables=["LOADER_API"])
 
-        response = api_service(url=dataSource, method="GET")
+        response = api_service(url=request.dataSource, method="GET")
 
         params = {
             "dataSource": response,
-            "dataDestination": dataDestination,
+            "dataDestination": request.dataDestination,
         }
 
         response = api_service(

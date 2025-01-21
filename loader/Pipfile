@@ -14,6 +14,7 @@ pytest = "*"
 httpx = "*"
 python-multipart = "*"
 loader = "*"
+departure = "*"
 
 [dev-packages]
 pytest = ">=8.3.0"
