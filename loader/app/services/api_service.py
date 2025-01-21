@@ -13,7 +13,7 @@ def api_service(url : str, method="GET", payload=None, params=None, headers=None
     :return: dict or None - JSON response if applicable, or None if a file is downloaded or an error occurs.
     """
     try:
-        url = f"{base_url}/{endpoint}"
+        url = url
         method = method.upper()
         response = requests.request(
             method=method,
