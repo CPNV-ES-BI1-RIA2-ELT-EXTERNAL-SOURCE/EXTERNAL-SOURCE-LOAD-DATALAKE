@@ -1,33 +1,24 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Form
-from app.cloud_services.aws_service import AwsService
-from app.cloud_services.cloud_service import CloudService
 from app.services.environement_varriables import get_env_variables
-
-from loader.app.api_handler import APIHandler
-
-from loader.app.services.request import api_service
+from app.services.api_service import (api_service)
 
 router : APIRouter = APIRouter()
 _VERSION : str = "v1"
+_bucket_destination = "/"
 
 @router.post("/" + _VERSION + "/raw-object")
 async def load_content(
-    bucket_name: str = Form(...),
-    bucket_destination: str = Form(...),
-    object_url: str = Form(...)
+    dataSource: str = Form(...),
+    dataDestination: str = Form(...)
 ):
     try:
         variables = get_env_variables(variables=["LOADER_API"])
-        params={
-            "url": object_url,
-        }
 
-        response = api_service(url=object_url, method="GET", params=params)
+        response = api_service(url=dataSource, method="GET")
 
         params = {
-            "object": response,
-            "bucket_name": bucket_name,
-            "bucket_destination": bucket_destination,
+            "dataSource": response,
+            "dataDestination": dataDestination,
         }
 
         response = api_service(
