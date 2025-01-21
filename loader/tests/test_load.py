@@ -15,66 +15,36 @@ from app.exceptions.object_alread_exist_exception import ObjectAlreadyExistExcep
 from unittest.mock import patch, MagicMock
 
 class TestLoad:
-    _BUCKET_NAME : str= "s3-bucket"
-    _BUCKET_DESTINATION : str = "path/to/destination/folder"
     _JSON_FILE_PATH = "../stationboard-Lausanne-01.12.2024-00.01-ALL.json"
     _OBJECT_URL = "http://fake-url.com"
 
     @pytest.fixture
-    @patch("app.cloud_services.client")
-    def client_init(self, mock_storage):
-        try:
-            mock_s3_client = MagicMock()
-            mock_storage.return_value = mock_s3_client
+    def client_init(self):
+        server = Server()
+        server.start()
+        client = TestClient(server.app)
+        return client
 
-            server = Server()
-            server.start()
-            client = TestClient(server.app)
-
-            return client, mock_s3_client
-        except EnvironmentVariableException as e:
-            print("Error:", e)
-
+    @patch("app.services.api_service")
     def test_load_json_success(self, client_init):
         # Given
-        client, mock_s3_client = client_init
+        client = client_init
+
+        params = {
+            "url": self._OBJECT_URL,
+        }
+
         with open(self._JSON_FILE_PATH, "rb") as file:
             files = {"object": (self._JSON_FILE_PATH.split("/")[-1], file, "application/json")}
 
-            form_data = {
-                "bucket_name": self._BUCKET_NAME,
-                "bucket_destination": self._BUCKET_DESTINATION,
-                "object_url" : self._OBJECT_URL
-            }
+            mock_s3_client = MagicMock()
+            mock_api_service.side_effect = [
+                {"data": file},
+                {"data": self._OBJECT_URL}
+            ]
 
             # When
-            response = client.post("/v1/raw-object", data=form_data)
+            response = client.post("/v1/raw-object", params=params)
 
             # Then
             assert response.status_code == 200
-
-    def test_document_already_exists(self, client_init):
-        # Given
-        client, mock_s3_client = client_init
-
-        mock_s3_client.put_object.side_effect = ClientError({
-            'Error': {
-                'Code': 'PreconditionFailed',
-                'Message': 'Object already exists!'
-            }
-        }, "PutObject")
-
-        with open(self._JSON_FILE_PATH, "rb") as file:
-            files = {"object": (self._JSON_FILE_PATH.split("/")[-1], file, "application/json")}
-            form_data = {
-                "bucket_name": self._BUCKET_NAME,
-                "bucket_destination": self._BUCKET_DESTINATION,
-            }
-
-
-            # When
-            client.post("/v1/object", data=form_data, files=files)
-
-            # Then
-            with pytest.raises(ObjectAlreadyExistException):
-                client.post("/load", json=json)
