@@ -1,21 +1,11 @@
-# récupération du document avec un url fictif
-# load dans un faux micros service mocké
-# test cas d'erreurs
-# retourner lien ou erreur
-
-import json
 import pytest
-
-from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
-
-from app.exceptions.environement_varriables_exception import EnvironmentVariableException
 from app.Server import Server
-from app.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 from unittest.mock import patch, MagicMock
+from app.services.api_service import api_service
 
 class TestLoad:
-    _JSON_FILE_PATH = "../stationboard-Lausanne-01.12.2024-00.01-ALL.json"
+    _JSON_FILE_PATH = "./stationboard-Lausanne-01.12.2024-00.01-ALL.json"
     _OBJECT_URL = "http://fake-url.com"
 
     @pytest.fixture
@@ -26,25 +16,26 @@ class TestLoad:
         return client
 
     @patch("app.services.api_service")
-    def test_load_json_success(self, client_init):
+    def test_load_json_success(self, mock_api_service, client_init):
         # Given
         client = client_init
 
         params = {
-            "url": self._OBJECT_URL,
+            "dataDestination": "s3://my-bucket-name/folder/data-file.csv",
+            "dataSource": self._OBJECT_URL,
         }
 
-        with open(self._JSON_FILE_PATH, "rb") as file:
-            files = {"object": (self._JSON_FILE_PATH.split("/")[-1], file, "application/json")}
+        with open(self._JSON_FILE_PATH, "rb") as file_obj:
+            files = {"object": (self._JSON_FILE_PATH.split("/")[-1], file_obj, "application/json")}
 
-            mock_s3_client = MagicMock()
+            # Mock le service API
             mock_api_service.side_effect = [
-                {"data": file},
+                {"data": {"mocked": "file_content"}},
                 {"data": self._OBJECT_URL}
             ]
 
             # When
-            response = client.post("/v1/raw-object", params=params)
+            response = client.post("/v1/raw-object", data=params, files=files)
 
             # Then
             assert response.status_code == 200
