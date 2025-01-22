@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from app.cloud_services.cloud_provider_factory import CloudProviderFactory
+from app.cloud_provider.cloud_provider_factory import CloudProviderFactory
 from app.schemas.requests.job_request import JobRequest
 from app.schemas.responses.job_response import JobResponse
 
 router = APIRouter()
 
-@router.post('/jobs', response_model=JobResponse)
-def job(job_id: int, request: JobRequest):
+@router.post('/job', response_model=JobResponse)
+def job(request: JobRequest):
     try:
         provider = CloudProviderFactory().get_cloud_provider(request.dataDestination)
 

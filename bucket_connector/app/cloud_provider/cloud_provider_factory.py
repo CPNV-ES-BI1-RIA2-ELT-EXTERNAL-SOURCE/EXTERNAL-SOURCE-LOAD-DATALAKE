@@ -14,7 +14,7 @@ class CloudProviderFactory:
         bucket = parsed_url.netloc
         path = parsed_url.path.lstrip('/')
 
-        if provider == "aws" :
+        if provider == "s3" :
             return  AwsProvider(
                 access_key=variables["AWS_ACCESS_KEY"],
                 secret_key=variables["AWS_SECRET_KEY"],

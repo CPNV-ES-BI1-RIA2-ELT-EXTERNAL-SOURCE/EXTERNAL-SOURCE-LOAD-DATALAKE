@@ -54,7 +54,7 @@ pytest tests/aws/test_load.py
 ├───docs                  # Documentations (class, sequence diagram, ...)
 ├───tests                 # Tests 
 ├───app
-│   ├───cloud_services    # All cloud services (aws, gcp...)
+│   ├───cloud_provider    # All cloud services (aws, gcp...)
 │   │   └───aws_service
 │   ├───exceptions        # All exceptions 
 │   └───objects           # Objects such as Json

@@ -41,9 +41,10 @@ class AwsProvider(CloudProvider):
         Disconnect from the AWS S3 service.
         Note: boto3 does not explicitly require a disconnection.
         """
+        self._connection.close()
         self._connection = None  # Optional, but explicit
 
-    def load(self, data: any) -> str:
+    def load(self, data: str) -> str:
         """
         Upload a binary object to the specified bucket.
 
@@ -55,11 +56,14 @@ class AwsProvider(CloudProvider):
             raise RuntimeError("AWS service is not connected. Call connect() first.")
 
         try:
-            self._connection.put_object(
-                Bucket=self._bucket,
-                Key=self._destination_name,
-                Body=data
-            )
+            try:
+                self._connection.put_object(
+                    Bucket=self._bucket,
+                    Key=self._destination_name,
+                    Body=data
+                )
+            except ClientError as e:
+                print(e)
 
             url = self._connection.generate_presigned_url(
                 ClientMethod='get_object',
@@ -78,4 +82,4 @@ class AwsProvider(CloudProvider):
                 raise DestinationNotFoundException("Destination not found!")
             if error_code == 'PreconditionFailed':
                 raise ObjectAlreadyExistException("Object already exists!")
-            raise  # Re-raises the exception for general error handling
+            raise
