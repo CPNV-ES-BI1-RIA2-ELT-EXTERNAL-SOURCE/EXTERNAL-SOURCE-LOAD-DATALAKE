@@ -34,7 +34,6 @@ dist/
 *.egg-info/
 
 # Dépendances
-Pipfile.lock
 poetry.lock
 
 .env
