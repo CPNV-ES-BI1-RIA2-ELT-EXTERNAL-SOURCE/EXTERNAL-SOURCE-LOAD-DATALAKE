@@ -1,41 +1,33 @@
+from unittest.mock import patch, MagicMock
+
 import pytest
 from fastapi.testclient import TestClient
-from app.Server import Server
-from unittest.mock import patch, MagicMock
-from app.services.api_service import api_service
+from app.main import app
 
-class TestLoad:
-    _JSON_FILE_PATH = "./stationboard-Lausanne-01.12.2024-00.01-ALL.json"
-    _OBJECT_URL = "http://fake-url.com"
-
+class TestJobRoute:
     @pytest.fixture
     def client_init(self):
-        server = Server()
-        server.start()
-        client = TestClient(server.app)
-        return client
+        return TestClient(app)
 
-    @patch("app.services.api_service")
-    def test_load_json_success(self, mock_api_service, client_init):
+    @patch("app.services.api_service.api_service")  # Patch the api_service function where it is used in the job function
+    def test_job_route_success(self, mock_api_service, client_init):
         # Given
         client = client_init
-
-        params = {
-            "dataDestination": "s3://my-bucket-name/folder/data-file.csv",
-            "dataSource": self._OBJECT_URL,
+        job_id = 123
+        payload = {
+            "dataSource": "http://mock-data-source.com",
+            "dataDestination": "s3://mock-destination-bucket/file.csv",
         }
 
-        with open(self._JSON_FILE_PATH, "rb") as file_obj:
-            files = {"object": (self._JSON_FILE_PATH.split("/")[-1], file_obj, "application/json")}
+        # Mock responses for `api_service`
+        mock_response = MagicMock()
+        mock_response.return_value = "prot"
+        mock_api_service.return_value = mock_response
 
-            # Mock le service API
-            mock_api_service.side_effect = [
-                {"data": {"mocked": "file_content"}},
-                {"data": self._OBJECT_URL}
-            ]
+        # When
+        response = client.post(f"/job/{job_id}", json=payload)
 
-            # When
-            response = client.post("/v1/raw-object", data=params, files=files)
-
-            # Then
-            assert response.status_code == 200
+        # Then
+        print(f"Response JSON: {response.json()}")
+        assert response.status_code == 200
+        assert response.json() == {"data": "mocked_loader_response"}
