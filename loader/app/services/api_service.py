@@ -1,40 +1,30 @@
 import requests
 
-def api_service(url : str, method="GET", payload=None, params=None, headers=None, save_path=None):
+def api_call(method, url, headers=None, data=None, params=None):
     """
-    A service function to handle both file downloads and standard API requests.
+    Appelle une API en GET ou POST et retourne la réponse.
 
-    :param url: str - The base URL for the API.
-    :param method: str - The HTTP method (GET, POST, PUT, DELETE).
-    :param payload: dict - The JSON payload for the request body.
-    :param params: dict - The query parameters for the request.
-    :param headers: dict - HTTP headers for the request.
-    :param save_path: str - If provided, saves the response as a file.
-    :return: dict or None - JSON response if applicable, or None if a file is downloaded or an error occurs.
+    :param method: 'GET' ou 'POST'
+    :param url: URL de l'API
+    :param headers: Dictionnaire des en-têtes HTTP (optionnel)
+    :param data: Données pour le corps de la requête (POST uniquement, optionnel)
+    :param params: Paramètres de requête (GET uniquement, optionnel)
+    :return: Réponse de l'API sous forme d'objet JSON ou texte brut
     """
     try:
-        url = url
-        method = method.upper()
-        response = requests.request(
-            method=method,
-            url=url,
-            headers=headers,
-            json=payload,
-            params=params,
-            stream=bool(save_path)  # Enable streaming for file downloads
-        )
-        response.raise_for_status()  # Check for HTTP errors
-
-        if save_path:
-            # Save the response content to a file
-            with open(save_path, 'wb') as file:
-                for chunk in response.iter_content(chunk_size=1024):
-                    file.write(chunk)
-            print(f"File successfully downloaded: {save_path}")
-            return None
+        if method.upper() == 'GET':
+            response = requests.get(url, headers=headers, params=params)
+        elif method.upper() == 'POST':
+            response = requests.post(url, headers=headers, data=data)
         else:
-            # Return the JSON response if no file is being saved
+            raise ValueError("La méthode doit être 'GET' ou 'POST'")
+
+        response.raise_for_status()
+
+        try:
             return response.json()
-    except requests.RequestException as e:
-        print(f"Request error: {e}")
-        return None
+        except ValueError:
+            return response.text
+
+    except requests.exceptions.RequestException as e:
+        return {"error": str(e)}
