@@ -15,16 +15,13 @@ def api_call(method, url, headers=None, data=None, params=None):
         if method.upper() == 'GET':
             response = requests.get(url, headers=headers, params=params)
         elif method.upper() == 'POST':
-            response = requests.post(url, headers=headers, data=data)
+            response = requests.post(url, headers=headers, json=data)
         else:
             raise ValueError("La méthode doit être 'GET' ou 'POST'")
 
         response.raise_for_status()
 
-        try:
-            return response.json()
-        except ValueError:
-            return response.text
+        return response.text
 
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}

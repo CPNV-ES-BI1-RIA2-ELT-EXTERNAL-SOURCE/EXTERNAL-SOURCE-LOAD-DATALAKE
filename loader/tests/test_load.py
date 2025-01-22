@@ -9,7 +9,7 @@ class TestJobRoute:
     def client_init(self):
         return TestClient(app)
 
-    @patch("app.services.api_service.api_service")  # Patch the api_service function where it is used in the job function
+    @patch("app.services.api_service.api_service")
     def test_job_route_success(self, mock_api_service, client_init):
         # Given
         client = client_init

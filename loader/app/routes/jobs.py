@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, HTTPException
 from app.schemas.requests.job_request import JobRequest
 from app.services.api_service import api_call
@@ -11,9 +12,10 @@ def job(job_id: int, request: JobRequest):
         variables = get_env_variables(variables=["LOADER_API"])
 
         response = api_call(url=request.dataSource, method="GET")
-
+        print(type(response))
+        print(type(request.dataDestination))
         data = {
-            "dataSource": response.content,
+            "data": response,
             "dataDestination": request.dataDestination,
         }
 
@@ -23,7 +25,7 @@ def job(job_id: int, request: JobRequest):
             data=data
         )
 
-        return response.content
+        return response
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur : {str(e)}")
