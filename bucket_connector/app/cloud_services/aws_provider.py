@@ -1,14 +1,14 @@
 from botocore.exceptions import ClientError
 from fastapi import UploadFile
 
-from app.cloud_services.cloud_service import CloudService
+from app.cloud_services.cloud_provider import CloudProvider
 from app.exceptions.authentication_failed_exception import AuthenticationFailedException
 from app.exceptions.destination_not_found_exception import DestinationNotFoundException
 from app.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 import boto3
 
 
-class AwsService(CloudService):
+class AwsProvider(CloudProvider):
     """
     Service to interact with AWS S3.
     """
@@ -43,11 +43,11 @@ class AwsService(CloudService):
         """
         self._connection = None  # Optional, but explicit
 
-    def load(self, object: UploadFile) -> None:
+    def load(self, data: any) -> str:
         """
         Upload a binary object to the specified bucket.
 
-        :param object: The UploadFile instance containing the file data to upload.
+        :param data: data to upload.
         :raises DestinationNotFoundException: If the bucket does not exist.
         :raises ObjectAlreadyExistException: If a precondition conflict occurs.
         """
@@ -55,15 +55,23 @@ class AwsService(CloudService):
             raise RuntimeError("AWS service is not connected. Call connect() first.")
 
         try:
-            # Read the file to get its binary content
-            file_content = object.file.read()
-
-            # Upload the file to the S3 bucket
             self._connection.put_object(
                 Bucket=self._bucket,
                 Key=self._destination_name,
-                Body=file_content
+                Body=data
             )
+
+            url = self._connection.generate_presigned_url(
+                ClientMethod='get_object',
+                Params={
+                    'Bucket': self._bucket,
+                    'Key': self._destination_name
+                },
+                ExpiresIn=604800
+            )
+
+            return url
+
         except ClientError as e:
             error_code = e.response['Error']['Code']
             if error_code == 'NoSuchBucket':
