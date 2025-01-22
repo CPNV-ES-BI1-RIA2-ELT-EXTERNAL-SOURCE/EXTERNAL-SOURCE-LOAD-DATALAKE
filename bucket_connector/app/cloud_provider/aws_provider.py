@@ -1,7 +1,7 @@
 from botocore.exceptions import ClientError
 from fastapi import UploadFile
 
-from app.cloud_services.cloud_provider import CloudProvider
+from app.cloud_provider.cloud_provider import CloudProvider
 from app.exceptions.authentication_failed_exception import AuthenticationFailedException
 from app.exceptions.destination_not_found_exception import DestinationNotFoundException
 from app.exceptions.object_alread_exist_exception import ObjectAlreadyExistException

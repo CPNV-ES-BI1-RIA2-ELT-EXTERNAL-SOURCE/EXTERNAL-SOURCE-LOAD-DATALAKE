@@ -1,5 +1,5 @@
-from app.cloud_services.aws_provider import AwsProvider
-from app.cloud_services.cloud_provider import CloudProvider
+from app.cloud_provider.aws_provider import AwsProvider
+from app.cloud_provider.cloud_provider import CloudProvider
 from app.services.environement_varriables import get_env_variables
 from urllib.parse import urlparse
 
