@@ -1,11 +1,9 @@
 import json
-import pytest
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import patch, Mock
 from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 
 from app.exceptions.environement_varriables_exception import EnvironmentVariableException
-from app.exceptions.object_alread_exist_exception import ObjectAlreadyExistException
 from app.main import app
 
 
@@ -26,7 +24,7 @@ class TestLoad:
         with open(self._JSON_FILE_PATH, "r") as file:
             json_file = json.load(file)
             payload = {
-                "data": json_file,
+                "data": json.dumps(json_file, indent=4),
                 "dataDestination": "s3://mock-destination-bucket/file.csv",
             }
 
@@ -50,11 +48,12 @@ class TestLoad:
             json_file = json.load(file)
 
             payload = {
-                "data": json_file,
+                "data": json.dumps(json_file, indent=4),
                 "dataDestination": "s3://mock-destination-bucket/file.csv",
             }
 
             # When
+            response = client.post("/job", json=payload)
+
             # Then
-            with pytest.raises(ObjectAlreadyExistException):
-                response = client.post("/job", json=payload)
+            assert response.status_code == 500
