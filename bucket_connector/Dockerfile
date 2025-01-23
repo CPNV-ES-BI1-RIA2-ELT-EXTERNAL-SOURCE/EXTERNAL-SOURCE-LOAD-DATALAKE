@@ -2,7 +2,7 @@
 FROM python:3.13-slim
 
 # Define working directory
-WORKDIR /load
+WORKDIR /bucket
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependency files first
-COPY Pipfile Pipfile.lock /load/
+COPY Pipfile Pipfile.lock /bucket/
 
 # Install pipenv globally
 RUN pip install --no-cache-dir pipenv
@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir pipenv
 RUN pipenv install --system --deploy
 
 # Copy the rest of the application code
-COPY . /load
+COPY . /bucket
 
 # Expose the specified port
 EXPOSE 8000
