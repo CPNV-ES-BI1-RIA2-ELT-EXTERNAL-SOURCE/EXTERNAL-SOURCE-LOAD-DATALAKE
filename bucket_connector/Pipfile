@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = ">=0.115.6"
+fastapi = {extras = ["standard"], version = "*"}
 google-cloud-storage = ">=2.19.0"
 boto3 = ">=1.35.7"
 uvicorn = ">=0.33"
