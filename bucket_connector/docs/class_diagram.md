@@ -49,4 +49,16 @@ classDiagram
 
     AwsProvider --> boto3
     
+    
+    JobRequest <|-- BaseModel
+    class JobRequest {
+    + data: str
+    + dataDestination: str
+    }
+    
+    JobResponse <|-- BaseModel
+    class JobResponse {
+    + url: str
+    }
+    
 ````

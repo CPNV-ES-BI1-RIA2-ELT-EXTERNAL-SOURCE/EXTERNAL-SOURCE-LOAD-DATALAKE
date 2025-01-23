@@ -9,4 +9,15 @@ classDiagram
     class DestinationNotFoundException {
         DestinationNotFoundException()
     }
+    
+    JobRequest <|-- BaseModel
+    class JobRequest {
+    + dataSource: str
+    + dataDestination: str
+    }
+    
+    JobResponse <|-- BaseModel
+    class JobResponse {
+    + dataSource: str
+    }
 ````
