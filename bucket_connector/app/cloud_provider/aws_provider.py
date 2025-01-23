@@ -54,14 +54,11 @@ class AwsProvider(CloudProvider):
             raise RuntimeError("AWS service is not connected. Call connect() first.")
 
         try:
-            try:
-                self._connection.put_object(
-                    Bucket=self._bucket,
-                    Key=self._destination_name,
-                    Body=data
-                )
-            except ClientError as e:
-                print(e)
+            self._connection.put_object(
+                Bucket=self._bucket,
+                Key=self._destination_name,
+                Body=data
+            )
 
             url = self._connection.generate_presigned_url(
                 ClientMethod='get_object',
