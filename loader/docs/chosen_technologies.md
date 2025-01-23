@@ -37,6 +37,16 @@ Very popular Python for developing fast, modern web APIs.
 
 [Official doc](https://fastapi.tiangolo.com/)
 
+Using routes : 
+Explanation of changes
+Router (routes.py):
+
+We've moved the /load route into an APIRouter to better organize routes and avoid overloading the Server class.
+The router now contains the /load route, and this approach allows for better scalability.
+Server (server.py):
+
+Server now includes the router with self.app.include_router(router), making it easy to add new routes in the future.
+The Server class remains responsible for managing the FastAPI instance, as well as connecting and disconnecting the cloud service.
 
 ## google-cloud-storage
 Official library to connect to google cloud storage.
@@ -54,4 +64,6 @@ Chosen because it is the official library for python.
 
 
 ## Uvicorn
-Uvicorn est un serveur ASGI (Asynchronous Server Gateway Interface) léger et performant, conçu pour exécuter des applications Python modernes comme FastAPI ou Starlette. 
+Uvicorn is a lightweight, high-performance ASGI (Asynchronous Server Gateway Interface) server designed to run modern Python applications such as FastAPI or Starlette. 
+
+Finally, I use fastapi directly, which will itself create a server without needing Unicorn.

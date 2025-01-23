@@ -1,12 +1,18 @@
 ````mermaid
 sequenceDiagram
     Actor API
-    API ->>+ Server : load a json
-    Server -)+ AwsService : connect()
-    activate AwsService
-    Server ->>- AwsService : load(json)
-    AwsService ->>+ AwsSdk : put_object(json)
-    activate AwsSdk
-    AwsSdk -->>- AwsService : sdk response
-    AwsService -->>- Server : response
+    API ->>+ main : 
+    main ->>+ jobs : 
+    activate jobs
+    jobs ->>+ getEnvVariables : get env variables
+    activate getEnvVariables
+    getEnvVariables -->>- jobs : array of variables
+    jobs ->>+ apiCall : GET 
+    apiCall -->>- jobs : response 
+    
+    jobs ->>+ apiCall : POST
+    apiCall -->>- jobs : response 
+    
+    main -->>- API : 
+    
 ````

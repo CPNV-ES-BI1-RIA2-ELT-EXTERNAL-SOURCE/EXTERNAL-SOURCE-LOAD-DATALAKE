@@ -2,7 +2,7 @@
 
 ## Description
 
-The aim of this project is to create a **load** in an ELT that will have a rest api, then deposit the data in a datalake and finally send a notification to the transfom that a document has been added.
+The aim of this project is to enable the connection and loading of objects on a bucket.
 
 ---
 
@@ -15,12 +15,24 @@ List all dependencies and their version needed by the project as :
 * IDE used pycharm 2024.3 or later [download](https://www.jetbrains.com/pycharm/download/?section=windows)
 * Python 3.13 or later [official doc](https://www.python.org/downloads/)
 * Git version 2.47.1 or later [official doc](https://git-scm.com/)
+* fastapi pip version 0.0.7 or later
 
 ### Configuration
 
-Install requiremenets 
+Clone repository
 ````shell
-pip install -r requirements.txt
+git clone https://github.com/CPNV-ES-BI1-RIA2-ELT-EXTERNAL-SOURCE/EXTERNAL-SOURCE-LOAD-DATALAKE.git
+cd EXTERNAL-SOURCE-LOAD-DATALAKE/bucket_connector
+````
+
+---
+
+## Development environment
+
+Install dependencies with pipenv
+````shell
+pip install pipenv
+pipenv install --dev
 ````
 
 Copy and modify the .env
@@ -28,39 +40,35 @@ Copy and modify the .env
 cp .env.example .env
 ````
 
----
-
-## Development environment
-
----
-### Start
-
+run dervice 
 ````shell
-python main.py
+faststapi dev --port 8080
 ````
 
+API information : 
+http://localhost:8080/docs#/default/job_job_post
 
 ### Run test
 ````shell
-pytest tests/aws/test_connection.py
-````
-````shell
-pytest tests/aws/test_load.py
+pytest tests/test_load.py
 ````
 
 ## Directory structure
 
 ````shell
-├───docs                  # Documentations (class, sequence diagram, ...)
-├───tests                 # Tests 
 ├───app
-│   ├───cloud_services    # All cloud services (aws, gcp...)
-│   │   └───aws_service
-│   ├───exceptions        # All exceptions 
-│   └───objects           # Objects such as Json
-├───.env
-├───main.py               # Entry point
-└───requirements.md
+│   ├───cloud_provider
+│   ├───exceptions
+│   ├───routes            
+│   ├───schemas           # schema to define input and output of the api
+│   │   ├───requests
+│   │   ├───responses
+│   ├───services
+│   ├───main.py
+├───docs
+├───tests
+├───.env.example
+└───Pipfile
 ````
 
 

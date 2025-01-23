@@ -50,7 +50,7 @@ http://localhost:8080/docs#/default/job_job_post
 
 ### Run test
 ````shell
-pytest tests/test_load.py
+pytest tests/aws/test_load.py
 ````
 
 ## Directory structure
