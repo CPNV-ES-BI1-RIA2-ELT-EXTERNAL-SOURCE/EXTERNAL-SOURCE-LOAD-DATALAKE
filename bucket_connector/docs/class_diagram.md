@@ -1,66 +1,52 @@
 ````mermaid
 classDiagram
-    class CloudService {
+    class CloudProvider {
         <<Interface>>        
         + connect() void
         + disconect() void
-        + load(source : any) void
+        + load(source : string) void
     }
     
-    CloudService <|-- GcpService
-    class GcpService {
-        - connectionString : string
-        - destinationName : string
-        - connection : SdkGcp
-
-        + GcpService(connectionString : string, destinationName : string)
-        + connect() void 
-        + disconect() void
-        + load(source : any) void        
+    class CloudProviderFactory {
+        + getCloudProvider(url : string) CloudProvider
     }
     
-    CloudService <|-- AwsService
-    class AwsService {
+    CloudProvider <|-- AwsProvider
+    class AwsProvider {
         - connectionString : string
         - destinationName : string
-        - access_key : string
-        - secret_key : string
+        - accessKey : string
+        - secretKey : string
         - bucket : string
         - region_name : string
-        - connection : SdkAws
+        - connection : boto3
 
-        + AwsService(access_key : string, secret_key : string, bucket : string, region : string, destination: string)
+        + AwsProvider(accessKey : string, secretKey : string, bucket : string, region : string, destination: string)
         + connect() void 
         + disconect() void
-        + load(source : any) void        
+        + load(source : string) void        
     }
     
-    CloudService <-- Server
-    class Server {
-        - app : FastApi
-        - service : CloudService
-
-        Server(service : CloudService)
-        + start() void
-        + stop() void
-    }
-    
-    DestinationNotFoundException <-- CloudService
+    DestinationNotFoundException <-- CloudProvider
     class DestinationNotFoundException {
         DestinationNotFoundException()
     }
     
-    ObjectAlreadyExistException <-- CloudService
+    ObjectAlreadyExistException <-- CloudProvider
     class ObjectAlreadyExistException {
         ObjectAlreadyExistException()
     }
     
-    AuthenticationFailedException <-- CloudService
+    AuthenticationFailedException <-- CloudProvider
     class AuthenticationFailedException {
         AuthenticationFailedException()
     }
+    
+    EnvironmentVariableException <-- CloudProvider
+    class EnvironmentVariableException {
+        EnvironmentVariableException()
+    }
 
-    GcpService --() SdkGcp
-    Server --() FastApi
+    AwsProvider --> boto3
     
 ````
