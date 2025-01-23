@@ -22,7 +22,7 @@ List all dependencies and their version needed by the project as :
 Clone repository
 ````shell
 git clone https://github.com/CPNV-ES-BI1-RIA2-ELT-EXTERNAL-SOURCE/EXTERNAL-SOURCE-LOAD-DATALAKE.git
-cd EXTERNAL-SOURCE-LOAD-DATALAKE/bucket_connector
+cd EXTERNAL-SOURCE-LOAD-DATALAKE/loader
 ````
 
 ---
@@ -42,7 +42,7 @@ cp .env.example .env
 
 run dervice 
 ````shell
-faststapi dev 
+docker build -t load .  
 ````
 
 API information : 

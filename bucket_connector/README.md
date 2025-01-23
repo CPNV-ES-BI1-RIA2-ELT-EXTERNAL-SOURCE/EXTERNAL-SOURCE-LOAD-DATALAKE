@@ -42,7 +42,7 @@ cp .env.example .env
 
 run dervice 
 ````shell
-faststapi dev --port 8080
+docker build -t bucket_conector . 
 ````
 
 API information : 
