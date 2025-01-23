@@ -10,14 +10,12 @@ boto3 = ">=1.35.7"
 uvicorn = ">=0.33"
 python-dotenv = ">=1.0"
 requests = "*"
-pytest = "*"
 httpx = "*"
 python-multipart = "*"
 loader = "*"
 
 [dev-packages]
 pytest = ">=8.3.0"
-requests = "*"
 
 [requires]
 python_version = "3.13"
