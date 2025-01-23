@@ -13,8 +13,7 @@ def job(job_id: int, request: JobRequest):
         variables = get_env_variables(variables=["LOADER_API"])
 
         response = api_call(url=request.dataSource, method="GET")
-        print(type(response))
-        print(type(request.dataDestination))
+
         data = {
             "data": response,
             "dataDestination": request.dataDestination,
