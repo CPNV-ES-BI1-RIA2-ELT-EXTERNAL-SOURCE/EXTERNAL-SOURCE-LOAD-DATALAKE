@@ -5,5 +5,5 @@ class CloudProvider:
     def disconnect(self) -> None:
         pass
 
-    def load(self, data: any) -> str:
+    def load(self, data: str) -> str:
         pass
