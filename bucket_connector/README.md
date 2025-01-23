@@ -46,7 +46,7 @@ faststapi dev --port 8080
 ````
 
 API information : 
-http://localhost:8080/docs#/default/job_job_post
+http://localhost:8080/docs
 
 ### Run test
 ````shell

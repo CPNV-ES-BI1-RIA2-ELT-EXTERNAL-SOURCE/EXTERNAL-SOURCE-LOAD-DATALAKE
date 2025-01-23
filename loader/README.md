@@ -42,11 +42,11 @@ cp .env.example .env
 
 run dervice 
 ````shell
-faststapi dev --port 8080
+faststapi dev 
 ````
 
 API information : 
-http://localhost:8080/docs#/default/job_job_post
+http://localhost:8000/docs
 
 ### Run test
 ````shell
