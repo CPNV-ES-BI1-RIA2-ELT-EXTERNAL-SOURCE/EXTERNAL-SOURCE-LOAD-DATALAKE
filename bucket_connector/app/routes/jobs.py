@@ -5,7 +5,7 @@ from app.schemas.responses.job_response import JobResponse
 
 router = APIRouter()
 
-@router.post('/job', response_model=JobResponse)
+@router.post('/job', response_model=str)
 def job(request: JobRequest):
     try:
         provider = CloudProviderFactory().get_cloud_provider(request.dataDestination)
@@ -14,7 +14,7 @@ def job(request: JobRequest):
 
         url = provider.load(data=request.data)
 
-        return JobResponse(url=url)
+        return url
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error : {str(e)}")
