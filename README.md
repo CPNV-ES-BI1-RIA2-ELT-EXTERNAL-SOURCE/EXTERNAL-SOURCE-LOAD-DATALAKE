@@ -3,6 +3,7 @@
 ## Description
 
 The aim is to offer a service to act as a loader within an ELT and thus use a service to push data into a cloud provider such as S3.
+
 ---
 
 ## Getting Started
@@ -45,7 +46,9 @@ docker container ls -a
 ````
 
 The server is running on : [http://localhost:8000](http://localhost:8000)
+
 To have the information about the api go to : [http://localhost:8000/docs](http://localhost:8000/docs)
+
 ---
 
 #### Development environment
