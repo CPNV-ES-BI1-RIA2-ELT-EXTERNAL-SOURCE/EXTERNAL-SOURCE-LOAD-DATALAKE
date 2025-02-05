@@ -1,9 +1,8 @@
-# EXTERNAL-SOURCE-LOAD
+# EXTERNAL-SOURCE-LOAD-DATALAKE
 
 ## Description
 
-The aim of this project is to enable the connection and loading of objects on a bucket.
-
+The aim is to offer a service to act as a loader within an ELT and thus use a service to push data into a cloud provider such as S3.
 ---
 
 ## Getting Started
@@ -11,66 +10,111 @@ The aim of this project is to enable the connection and loading of objects on a 
 ### Prerequisites
 
 List all dependencies and their version needed by the project as :
-
-* IDE used pycharm 2024.3 or later [download](https://www.jetbrains.com/pycharm/download/?section=windows)
 * Python 3.13 or later [official doc](https://www.python.org/downloads/)
 * Git version 2.47.1 or later [official doc](https://git-scm.com/)
-* fastapi pip version 0.0.7 or later
+* Docker desktop version 4.36.0 or later [official doc](https://www.docker.com/products/docker-desktop/)
 
-### Configuration
-
-Clone repository
-````shell
-git clone https://github.com/CPNV-ES-BI1-RIA2-ELT-EXTERNAL-SOURCE/EXTERNAL-SOURCE-LOAD-DATALAKE.git
-cd EXTERNAL-SOURCE-LOAD-DATALAKE/loader
-````
+Here are few more dependencies need for Development : 
+* IDE used pycharm 2024.3 or later [official doc](https://www.jetbrains.com/pycharm/download/?section=windows)
+* Pipenv version 2024.4.0 or later [official doc](https://pipenv.pypa.io/en/latest/)
 
 ---
 
-## Development environment
+### Configuration
 
-Install dependencies with pipenv
-````shell
-pip install pipenv
-pipenv install --dev
-````
+#### Production environment
 
-Copy and modify the .env
+Copy and modify the .env file.
 ````shell
 cp .env.example .env
 ````
 
-run dervice 
+Build the docker container.
 ````shell
-docker build -t load .  
+docker build -t bucket_conector . 
 ````
 
-API information : 
-http://localhost:8000/docs
-
-### Run test
+Run the docker container.
 ````shell
-pytest tests/test_load.py
+docker run -d -p 8000:8000 bucket_conector
+````
+
+Check container.
+````shell
+docker container ls -a
+````
+
+The server is running on : [http://localhost:8000](http://localhost:8000)
+To have the information about the api go to : [http://localhost:8000/docs](http://localhost:8000/docs)
+---
+
+#### Development environment
+
+If not already done, install pipenv with python. 
+````shell
+pip install pipenv
+````
+
+Then check the version : 
+````shell
+pipenv --version
+````
+
+Enter the virtual environment : 
+````shell
+pipenv shell
+````
+
+Install all dependencies : 
+````shell
+pipenv install --dev
+````
+
+Copy and modify the .env file.
+````shell
+cp .env.example .env
+````
+
+Then run the server locally.
+````shell
+fastapi.exe run --port 8000
+````
+
+The server is running on : [http://localhost:8000](http://localhost:8000)
+
+To have the information about the api go to : [http://localhost:8000/docs](http://localhost:8000/docs)
+
+## Testing
+
+To run all tests : 
+````shell
+pytest
+````
+
+To run a specific test :
+````shell
+pytest tests/aws/test_load.py
 ````
 
 ## Directory structure
 
 ````shell
-├───app
+├───app                   # Source code (application content) 
 │   ├───cloud_provider
 │   ├───exceptions
 │   ├───routes            
-│   ├───schemas           # schema to define input and output of the api
+│   ├───schemas           # Schema to define input and output of the api
 │   │   ├───requests
 │   │   ├───responses
 │   ├───services
-│   ├───main.py
-├───docs
-├───tests
-├───.env.example
-└───Pipfile
+│   ├───main.py           # Entrypoint
+├───docs                  # Documentation
+├───tests                 # Tests 
+├───.env.example     
+├───Dockerfile            # Docker image configuration 
+├───Pipfile               # Dependencies
+└───Pipfile.lock           
 ````
-
 
 ## Collaborate
 
@@ -86,7 +130,7 @@ pytest tests/test_load.py
 
 ### Commits
 * [How to commit](https://www.conventionalcommits.org/en/v1.0.0/)
-```bash
+```shell
 <type>(<scope>): <subject>
 ```
 
@@ -101,20 +145,19 @@ pytest tests/test_load.py
 - **test**: Adding or modifying tests.
 
 examples :
-```bash
+```shell
 feat(MyClass): add a button in the ...
 ````
-```bash
+```shell
 feat(example.js): change name into username
 ````
 
 ---
 
 ## License
-MIT
+The project is released under a [MIT license](https://mit-license.org/)
 
 ---
 
 ## Contact
-
 * If needed you can create an issue on GitHub we will try to respond as quickly as possible.
