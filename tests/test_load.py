@@ -25,9 +25,11 @@ class TestJobRoute:
         mock_api_service.return_value = mock_response
 
         # When
+        # TODO update route
         response = client.post(f"/job/{job_id}", json=payload)
 
         # Then
+        # TODO remove printf instruction
         print(f"Response JSON: {response.json()}")
         assert response.status_code == 200
         assert response.json() == {"data": "mocked_loader_response"}

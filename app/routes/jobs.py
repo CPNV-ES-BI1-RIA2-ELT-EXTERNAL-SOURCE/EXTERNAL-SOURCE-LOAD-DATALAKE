@@ -26,5 +26,6 @@ def job(job_id: int, request: JobRequest):
         ).replace("\"", "")
         return JobResponse(dataSource=response)
 
+    //TODO Check API framwork best practices
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur : {str(e)}")

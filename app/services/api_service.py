@@ -1,6 +1,8 @@
 import requests
 
 def api_call(method, url, headers=None, data=None, params=None):
+
+    # TODO Remove french content
     """
     Appelle une API en GET ou POST et retourne la réponse.
 
